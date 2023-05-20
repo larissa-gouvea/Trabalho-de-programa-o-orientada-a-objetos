@@ -1,0 +1,666 @@
+///Agnês Christensen Rusche
+///Gabriel Toscano Jorge Rodrigues
+///Larissa de Sousa Gouvea
+
+#include <iostream>
+#include <stdlib.h>
+#include <locale.h>
+#include <windows.h>
+
+using namespace std;
+class Endereco{
+    int numero;
+    string bairro;
+    string rua;
+public:
+     Endereco() {}
+    Endereco(int num_endereco, string bairro_endereco, string rua_endereco){
+        numero=num_endereco;
+        bairro=bairro_endereco;
+        rua=rua_endereco;
+    }
+};
+
+class Loja{
+    string nome;
+    Endereco endereco;
+    int telefone;
+public:
+ Loja(string nome_loja, int tel, Endereco endereco_loja){
+    nome = nome_loja;
+    endereco = endereco_loja;
+    telefone=tel;
+}
+
+    string get_nomeloja()
+    {
+        return nome;
+    }
+};
+
+class Pessoa
+{
+    string nome;
+    int data_nascimento;
+    string endereco;
+public:
+    Pessoa()
+    {
+
+    }
+    Pessoa(string n, string ende, int data_nasc)   ///construtor
+    {
+        nome = n;
+        endereco = ende;
+        data_nascimento = data_nasc;
+    }
+    string getendereco()
+    {
+        return endereco;
+    }
+    int getDataNascimento()
+    {
+        return data_nascimento;
+    }
+    string getnome()
+    {
+        return nome;
+    }
+};
+
+class Cliente : public Pessoa
+{
+    int codigo_c;
+    int telefone;
+public:
+    Cliente()
+    {
+
+    }
+    Cliente(int tel, int cod_c, string n, string ende, int data_nasc) : Pessoa(n, ende, data_nasc)
+    {
+        telefone = tel;
+        codigo_c = cod_c;
+    }
+    void setcodigo_c(int cod_c)
+    {
+        codigo_c = cod_c;
+    }
+    int getcodigo_c()
+    {
+        return codigo_c;
+    }
+    void settelefone(int telefone)
+    {
+        this->telefone = telefone;
+    }
+    int gettelefone()
+    {
+        return telefone;
+    }
+};
+
+struct LClientes
+{
+    Cliente num[100];
+    int tam;
+};
+
+class Carrinho
+{
+    float total;
+    string compra[100];
+    static int itens;
+public:
+    void ini_carrinho()
+    {
+        total=0;
+        for(int i=0; i <100; i++)
+        {
+            compra[i]=" ";
+        }
+    }
+
+    void setcompra(int valor, string item)
+    {
+        total = total + valor;
+        compra[itens] = item;
+    }
+    static void incrementaItens()
+    {
+        itens++;
+    }
+
+    static int getItens()
+    {
+        return itens;
+    }
+
+    float gettotal()
+    {
+        return total;
+    }
+    void compras()
+    {
+        for(int i=0; i<itens; i++)
+        {
+            cout << "Item " << i+1 << ": " << compra[i] << endl;
+        }
+    }
+    int getitens()
+    {
+        return itens;
+    }
+    void setitens(int num)
+    {
+        itens = num;
+    }
+};
+
+int  Carrinho::itens=0; ///inicializa itens com 0
+
+class Pizza
+{
+
+    string sabor;
+    int codigo_pizza; ///um codigo para identificar a pizza no cardapio
+public:
+    virtual void imprime()=0;
+    Pizza()
+    {
+
+    }
+    Pizza(string sabor_pizza, int cod_pizza)
+    {
+
+        sabor = sabor_pizza;
+        codigo_pizza = cod_pizza;
+    }
+    void setSabor(string sabor_pizza)
+    {
+        sabor = sabor_pizza;
+    }
+    void setcodigo_pizza(int cod_pizza)
+    {
+        codigo_pizza=cod_pizza;
+    }
+    string getSabor()
+    {
+        return sabor;
+    }
+
+    int getcodigo_pizza()
+    {
+        return codigo_pizza;
+    }
+
+};
+
+class PizzaDoce : public Pizza
+{
+
+public:
+    PizzaDoce() {}
+    PizzaDoce(string sabor_pizza, int cod_pizza) : Pizza(sabor_pizza, cod_pizza) {}
+    void imprime() override
+    {
+
+        cout << "Sabor doce: " << getSabor() << endl;
+        cout << "Código: " << getcodigo_pizza() << endl;
+        cout << endl;
+    }
+};
+class PizzaSalgada: public Pizza
+{
+public:
+    PizzaSalgada() {}
+    PizzaSalgada(string sabor_pizza, int cod_pizza) : Pizza(sabor_pizza, cod_pizza) {}
+    void imprime() override
+    {
+
+        cout << "Sabor salgada: " << getSabor() << endl;
+        cout << "Código: " << getcodigo_pizza() << endl;
+        cout << endl;
+    }
+
+};
+
+struct LPizzaD
+{
+    PizzaDoce  num[100];
+    int tam;
+};
+struct LPizzaS
+{
+    PizzaSalgada  num[100];
+    int tam;
+};
+
+class Funcionario : public Pessoa
+{
+private:
+    int salario;
+    int codigo_f;
+    string cargo;
+public:
+    Funcionario()
+    {
+
+    }
+    Funcionario(int s, int cod_f, string c, string n, string ende, int data_nasc) : Pessoa(n, ende, data_nasc)
+    {
+        salario = s;
+        codigo_f = cod_f;
+        cargo = c;
+    }
+
+    Cliente cadastrarCliente(int &tam)
+    {
+        int tel, cod_c;
+        string n, ende;
+        int data_nasc;
+        cout <<"Digite o Nome do cliente: ";
+        cin >> n;
+        cout <<"\nDigite o telefone do cliente: ";
+        cin >> tel;
+        cout << "\nDigite a data de nascimento do cliente: ";
+        cin >> data_nasc;
+        cout << "\nDigite o endereço do cliente: ";
+        cin >> ende;
+        cod_c = tam;
+        cout << "\n\nCliente cadastrado com sucesso";
+        Sleep(2000);
+        system("cls");
+        Cliente cliente(tel, cod_c, n, ende, data_nasc);
+        return cliente;
+    }
+
+    bool exclui_cliente(LClientes &lista)
+    {
+        int pos;
+        cout << "Qual codigo do cliente que deseja excluir? : ";
+        cin >> pos;
+        if(lista.tam < 100)
+        {
+            for(int i=pos; i<lista.tam; i++)
+            {
+                lista.num[i] = lista.num[i+1];
+                lista.num[i].setcodigo_c(lista.num[i].getcodigo_c()-1);
+            }
+            lista.tam--;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+        cout << "\n\nCliente excluido com sucesso";
+        Sleep(2000);
+        system("cls");
+    }
+
+    void cadastraPizza_doce(LPizzaD &pizza_doce)
+    {
+        pizza_doce.num[0].setSabor("Beijinho");
+        pizza_doce.num[1].setSabor("Brigadeiro");
+        pizza_doce.num[2].setSabor("Sensação");
+
+        for(int i=0; i<3; i++)
+        {
+            pizza_doce.num[i].setcodigo_pizza(i); ///Beijinho codigo = 0,Brigadeiro codigo = 1, Sensação codigo = 2
+        }
+        pizza_doce.tam = 3;
+    }
+
+    void cadastraPizza_salgada(LPizzaS &pizza_salgada)
+    {
+        pizza_salgada.num[0].setSabor("Mussarela");
+        pizza_salgada.num[1].setSabor("Frango");
+        pizza_salgada.num[2].setSabor("Calabresa");
+        for(int i=0; i<3; i++)
+        {
+            pizza_salgada.num[i].setcodigo_pizza(i); ///Mussarela codigo = 0,Frango codigo = 1, Calabresa codigo = 2
+        }
+
+    }
+
+    PizzaDoce cadastrar_pizzaD(int &tam)
+    {
+
+        string sabor;
+        cout <<"Digite o sabor da pizza: ";
+        cin >> sabor;
+        cout << "\n\nSabor cadastrado com sucesso";
+
+        Sleep(2000);
+        system("cls");
+        PizzaDoce pizza(sabor, tam);
+        return pizza;
+    }
+
+    PizzaSalgada cadastrar_pizzaS(int &tam)
+    {
+
+        string sabor;
+        cout <<"Digite o sabor da pizza: ";
+        cin >> sabor;
+        cout << "\n\nSabor cadastrado com sucesso";
+        Sleep(2000);
+        system("cls");;
+        PizzaSalgada pizza(sabor, tam);
+        return pizza;
+    }
+
+    template <typename TIPO>
+    void imprime(TIPO pizza, int tam)  { ///pode imprimir a salgada ou doce
+        for(int i=0;i<tam;i++){
+           pizza.num[i].imprime();
+
+        }
+    }
+      template <typename TIPO>
+    bool exclui_pizza(TIPO &lista)
+    {
+        int pos;
+        cout << "Qual codigo da pizza que deseja excluir? : ";
+        cin >> pos;
+        if(lista.tam < 100)
+        {
+            for(int i=pos; i<lista.tam; i++)
+            {
+                lista.num[i] = lista.num[i+1];
+            }
+            lista.tam--;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+        cout << "\n\nPizza excluida com sucesso";
+        Sleep(2000);
+        system("cls");
+    }
+    void setcodigo_f(int cod_f)
+    {
+        codigo_f = cod_f;
+    }
+    int getcodigo_f()
+    {
+        return codigo_f;
+    }
+    void setsalario(int salario)
+    {
+        this->salario = salario;
+    }
+    int getsalario()
+    {
+        return salario;
+    }
+    void setcargo(int cod_f)
+    {
+        codigo_f = cod_f;
+    }
+    string getcargo()
+    {
+        return cargo;
+    }
+
+    void visualiza_cliente(LClientes lista)
+{
+    int pos;
+    cout << "Qual codigo do cliente que deseja visualizar? : ";
+    cin >> pos;
+    system("cls");
+    cout << "Codigo: " << lista.num[pos].getcodigo_c();
+    cout << "\nNome: " << lista.num[pos].getnome();
+    cout << "\nEndereço: " << lista.num[pos].getendereco();
+    cout << "\nTelefone: " << lista.num[pos].gettelefone();
+    cout << "\nData de nascimento: " << lista.num[pos].getDataNascimento();
+    cout << "\n\n";
+    system("pause");
+    system("cls");
+}
+
+};
+
+struct LFuncionario
+{
+    Funcionario num[100];
+    int tam;
+};
+
+template <typename TIPO>
+void ini_lista(TIPO &lista)
+{
+    lista.tam=0;
+}
+
+class Chefe : public Funcionario
+{
+    string nome = "Felski";
+public:
+    Funcionario cadastrarFuncionario(int &tam)
+    {
+        int s, cod_f;
+        string c, n, ende;
+        int data_nasc;
+
+        cout <<"Digite o Nome do funcionario: ";
+        cin >> n;
+        cout <<"\nDigite o cargo do funcionario: ";
+        cin >> c;
+        cout <<"\nDigite o salario do funcionario: ";
+        cin >> s;
+        cout << "\nDigite a data de nascimento do funcionario: ";
+        cin >> data_nasc;
+        cout << "\nDigite o endereço do funcionario: ";
+        cin >> ende;
+        cod_f = tam;
+        cout << "\n\nFuncionario cadastrado com sucesso";
+        Sleep(2000);
+        system("cls");
+
+        Funcionario funcionario(s, cod_f, c, n, ende, data_nasc);
+        return funcionario;
+    }
+
+    bool exclui_funcionario(LFuncionario &lista)
+    {
+        int pos;
+        cout << "Qual codigo do funcionario que deseja excluir? : ";
+        cin >> pos;
+        if(lista.tam < 100)
+        {
+            for(int i=pos; i<lista.tam; i++)
+            {
+                lista.num[i] = lista.num[i+1];
+                lista.num[i].setcodigo_f(lista.num[i].getcodigo_f()-1);
+            }
+            lista.tam--;
+            cout << "\n\nFuncionario excluido com sucesso";
+            Sleep(2000);
+            system("cls");
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    void visualiza_funcionario(LFuncionario lista)
+{
+    int pos;
+    cout << "Qual codigo do funcionario que deseja visulizar? : ";
+    cin >> pos;
+    system("cls");
+    cout << "Codigo: " << lista.num[pos].getcodigo_f();
+    cout << "\nNome: " << lista.num[pos].getnome();
+    cout << "\nEndereço: " << lista.num[pos].getendereco();
+    cout << "\nCargo: " << lista.num[pos].getcargo();
+    cout << "\nSalario: " << lista.num[pos].getsalario();
+    cout << "\nData de nascimento: " << lista.num[pos].getDataNascimento();
+    cout << "\n\n";
+    system("pause");
+    system("cls");
+}
+};
+
+template<typename TIPO>
+void cadastrarCompra(Carrinho &compras, TIPO produto)
+{
+    int pos, valor, tam;
+    string nome;
+    cout << "Qual codigo da pizza que deseja adicionar ao carrinho? : ";
+    cin >> pos;
+    cout << "Qual tamanho da pizza que deseja?(1-Pequena, 2-Média, 3-Grande) : ";
+    cin >> tam;
+    if(tam == 1){
+        valor = 40;
+    }
+    else if(tam == 2){
+        valor  = 60;
+    }
+    else{
+        valor = 80;
+    }
+    nome = produto.num[pos].getSabor();
+    compras.setcompra(valor,nome);
+    Carrinho::incrementaItens();
+
+    cout << "\n\nItem adicionado com sucesso";
+    Sleep(2000);
+    system("cls");
+}
+void exclui_compras(Carrinho &compras)
+{
+    compras.ini_carrinho();
+    cout << "\n\nCarrinho esvaziado com sucesso";
+    Sleep(2000);
+    system("cls");
+}
+
+
+
+
+template<typename TIPO>
+void visualiza_produto(TIPO lista)
+{
+    int pos;
+    cout << "Qual codigo do produto que deseja visulizar? : ";
+    cin >> pos;
+    system("cls");
+    lista.num[pos].imprime();
+    system("pause");
+    system("cls");
+}
+
+void visualiza_carrinho(Carrinho compras)
+{
+    cout << "Itens e valor total do carrinho : \n\n";
+    cout << "Valor: " << compras.gettotal()<<endl;
+    compras.compras();
+    cout << "\n\n";
+    system("pause");
+    system("cls");
+}
+
+void inicio(){
+    Endereco endereco(123456, "Centro", "Uruguai");
+    Loja loja("LAGANES",654321,endereco);
+    Chefe Felski;
+    LClientes listaC;
+    LPizzaD listaPd;
+    LPizzaS listaPs;
+    LFuncionario listaF;
+    Funcionario fun;
+    Carrinho compras;
+    compras.ini_carrinho();
+    ini_lista(listaF);
+    ini_lista(listaC);
+    ini_lista(listaPd);
+    ini_lista(listaPs);
+    listaPd.tam=3;
+    listaPs.tam=3;
+    fun.cadastraPizza_doce(listaPd);
+    fun.cadastraPizza_salgada(listaPs);
+    int escolha, escolha2, escolhaF;
+
+    while(true){
+        cout <<"LOJA "<<loja.get_nomeloja()<<":"<<"\n\n1)Adicionar\n2)Remover\n3)Visualizar\n\nEscolha: ";
+        cin >> escolha;
+        system("cls");
+        cout <<"LOJA LAGANES:\n\n1)Cliente\n2)Funcionario\n3)Pizza Doce\n4)Pizza Salgada\n5)Pedidos\n\nEscolha: ";
+        cin>> escolha2;
+        system("cls");
+        escolhaF = escolha*10 + escolha2;
+        switch(escolhaF)
+        {
+        case 11:
+            listaC.num[listaC.tam] = fun.cadastrarCliente(listaC.tam);
+            listaC.tam++;
+            break;
+        case 12:
+            listaF.num[listaF.tam] = Felski.cadastrarFuncionario(listaF.tam);
+            listaF.tam++;
+            break;
+        case 13:
+            listaPd.num[listaPd.tam] = fun.cadastrar_pizzaD(listaPd.tam);
+            listaPd.tam++;
+            break;
+        case 14:
+            listaPs.num[listaPs.tam] = fun.cadastrar_pizzaS(listaPs.tam);
+            listaPs.tam++;
+            break;
+        case 15:
+            cout << "Pizza salgada ou doce?(1-Salgada, 2-Doce): ";
+            cin >> escolha;
+            if(escolha == 1){
+                cadastrarCompra(compras, listaPs);
+            }
+            else{
+                cadastrarCompra(compras, listaPd);
+            }
+            break;
+        case 21:
+            fun.exclui_cliente(listaC);
+            break;
+        case 22:
+            Felski.exclui_funcionario(listaF);
+            break;
+        case 23:
+            fun.exclui_pizza(listaPs);
+            break;
+        case 24:
+            fun.exclui_pizza(listaPd);
+            break;
+        case 25:
+            exclui_compras(compras);
+            break;
+        case 31:
+            fun.visualiza_cliente(listaC);
+            break;
+        case 32:
+            Felski.visualiza_funcionario(listaF);
+            break;
+        case 33:
+            visualiza_produto(listaPd);
+            break;
+        case 34:
+            visualiza_produto(listaPs);
+            break;
+        case 35:
+            visualiza_carrinho(compras);
+            break;
+        }
+
+    }
+}
+
+int main()
+{
+    setlocale(LC_ALL,"Portuguese");
+    inicio();
+
+    return 0;
+}
